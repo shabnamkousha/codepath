@@ -1,5 +1,6 @@
 # codepath
-Todo List
+
+Todo List by Shabnam Kousha, Master of Computer Engineering Tech
 
 This is a basic Todo List Android application. In this application, a user is able to add, edit or delete items.
 
