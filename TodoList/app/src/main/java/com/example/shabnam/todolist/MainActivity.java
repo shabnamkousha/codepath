@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     ListView lvItems;
     EditText etEditText;
     private final int REQUEST_CODE = 20;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,44 +38,45 @@ public class MainActivity extends AppCompatActivity {
         lvItems=(ListView) findViewById(R.id.lvItems);
         lvItems.setAdapter(aToDoAdapter);
         etEditText = (EditText) findViewById(R.id.etEditText);
+        //Long click listener for edit item
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                                               @Override
-                                               public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                                                   todoItems.remove(position);
-                                                   aToDoAdapter.notifyDataSetChanged();
-                                                   writeItems();
-                                                   return true;
-                                               }
-                                           }
+               @Override
+               public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                   todoItems.remove(position);
+                   // Refresh the list
+                   aToDoAdapter.notifyDataSetChanged();
+                   writeItems();
+                   return true;
+               }
+        }
         );
 
-
-       lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                          @Override
-                                          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                              //todoItems.remove(position);
-                                              //aToDoAdapter.notifyDataSetChanged();
-                                              //writeItems();
-                                              //return true;
-                                              launchEditItem(position);
-                                          }
-                                      }
+        //Short click listener for edit item
+        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+          @Override
+          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+              //Here it calls launchEditItem function to launch the edititem activity. It passes the
+              //position of the item being edited in the child activity
+              launchEditItem(position);
+          }
+        }
        );
 
     }
 
+    //In this function after setting the item content and position parameters,
+    //edititem activity will be called.
     public void launchEditItem(int position) {
-        // first parameter is the context, second is the class of the activity to launch
         Intent i = new Intent(MainActivity.this, EditItemActivity.class);
-
+        //Here the position and content of the item is being passed using extra
         i.putExtra("position", position);
         String itemContent=todoItems.get(position);
         i.putExtra("itemContent", itemContent);
-        //startActivity(i);
+        //Edititem activity being called here
         startActivityForResult(i, REQUEST_CODE);
     }
 
-    // ActivityOne.java, time to handle the result of the sub-activity
+    //Time to handle the result of the edititem activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // REQUEST_CODE is defined above
@@ -89,10 +91,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Read the items from file and populates them in the list
     public void populateArrayItems(){
         readItems();
         aToDoAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,todoItems) ;
     }
+
+    //This function is used to read the items from the text file
     private void readItems(){
         File filesDir = getFilesDir();
         File file = new File(filesDir,"todo.txt");
@@ -103,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //This function is used to write the items into the text file
     private void writeItems(){
         File filesDir = getFilesDir();
         File file = new File(filesDir,"todo.txt");
@@ -112,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    //Defualt menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -119,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    // Default menu function
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -134,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //This function is being called when use clicks Add button to add the new item
     public void onAddItem(View view) {
         todoItems.add(etEditText.getText().toString());
         etEditText.setText("");

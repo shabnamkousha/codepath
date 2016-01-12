@@ -14,6 +14,7 @@ public class EditItemActivity extends AppCompatActivity {
     EditText etEditText1;
     int itemPosition;
 
+    //Here the item position and item content being read and displayed in edit text input
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,16 +32,16 @@ public class EditItemActivity extends AppCompatActivity {
 
     }
 
+    //This function is being called when user clicks on Edit button
     public void onSubmitEdit(View view) {
-        //EditText editedItem = (EditText) findViewById(R.id.etEditText1);
         // Prepare data intent
         Intent data = new Intent();
 
         data.putExtra("editedItem", etEditText1.getText().toString());
 
-        data.putExtra("itemPosition", itemPosition); // ints work too
+        data.putExtra("itemPosition", itemPosition);
         // Activity finished ok, return the data
         setResult(RESULT_OK, data); // set result code and bundle data for response
-        finish(); // closes the activity, pass data to parent
+        finish(); // closes the activity, pass data to parent, main activity
     }
 }
