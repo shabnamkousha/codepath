@@ -1,4 +1,4 @@
-# codepath
+# Codepath
 
 Todo List by Shabnam Kousha, Master of Computer Engineering Tech
 
