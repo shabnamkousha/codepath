@@ -6,7 +6,7 @@ This is a basic Todo List Android application. In this application, a user is ab
 
 The application has been fully tested in Android Emulator.
 
-Time spent: 17 hours spent in total (including seeting up the environment, going through tutorials and implementing
+Time spent: 17 hours spent in total (including setting up the environment, going through tutorials and implementing
 the application)
 
 Completed user stories:
