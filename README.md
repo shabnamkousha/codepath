@@ -18,6 +18,8 @@ them properly on app restart.
 
 Walkthrough of all user stories:
 
-https://raw.githubusercontent.com/codepath/android-rottentomatoes-demo/submission/anim_rotten_tomatoes.gif
+<img src="https://raw.githubusercontent.com/codepath/android-rottentomatoes-demo/submission/anim_rotten_tomatoes.gif" alt="Video Walkthrough" style="max-width:100%;">
+
+
 
 
