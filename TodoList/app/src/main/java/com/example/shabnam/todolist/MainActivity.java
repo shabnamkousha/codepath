@@ -1,6 +1,7 @@
 package com.example.shabnam.todolist;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -27,9 +28,12 @@ public class MainActivity extends AppCompatActivity {
     ListView lvItems;
     EditText etEditText;
     private final int REQUEST_CODE = 20;
+    DatabaseHelper myDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        myDB = new DatabaseHelper(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -40,27 +44,27 @@ public class MainActivity extends AppCompatActivity {
         etEditText = (EditText) findViewById(R.id.etEditText);
         //Long click listener for edit item
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-               @Override
-               public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                   todoItems.remove(position);
-                   // Refresh the list
-                   aToDoAdapter.notifyDataSetChanged();
-                   writeItems();
-                   return true;
-               }
-        }
+                                               @Override
+                                               public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                                                   todoItems.remove(position);
+                                                   // Refresh the list
+                                                   aToDoAdapter.notifyDataSetChanged();
+                                                   writeItems();
+                                                   return true;
+                                               }
+                                           }
         );
 
         //Short click listener for edit item
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-          @Override
-          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-              //Here it calls launchEditItem function to launch the edititem activity. It passes the
-              //position of the item being edited in the child activity
-              launchEditItem(position);
-          }
-        }
-       );
+                                           @Override
+                                           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                               //Here it calls launchEditItem function to launch the edititem activity. It passes the
+                                               //position of the item being edited in the child activity
+                                               launchEditItem(position);
+                                           }
+                                       }
+        );
 
     }
 
@@ -99,23 +103,21 @@ public class MainActivity extends AppCompatActivity {
 
     //This function is used to read the items from the text file
     private void readItems(){
-        File filesDir = getFilesDir();
-        File file = new File(filesDir,"todo.txt");
-        try{
-            todoItems = new ArrayList<String>(FileUtils.readLines(file));
-        } catch (IOException e){
 
+        Cursor allItems = myDB.getAllItems();
+        todoItems = new ArrayList<String>(); 
+        while (allItems.moveToNext()){
+            todoItems.add(allItems.getString(1));
         }
+
     }
 
     //This function is used to write the items into the text file
     private void writeItems(){
-        File filesDir = getFilesDir();
-        File file = new File(filesDir,"todo.txt");
-        try{
-            FileUtils.writeLines(file,todoItems);
-        } catch (IOException e){
-
+        //Deletes and adds all the items again
+        myDB.deleteAllItems();
+        for (int i = 0; i < todoItems.size(); i++) {
+            myDB.addItem(todoItems.get(i));
         }
     }
 
@@ -145,8 +147,10 @@ public class MainActivity extends AppCompatActivity {
 
     //This function is being called when use clicks Add button to add the new item
     public void onAddItem(View view) {
-        todoItems.add(etEditText.getText().toString());
+        String currentString=etEditText.getText().toString();
+        todoItems.add(currentString);
         etEditText.setText("");
         writeItems();
+
     }
 }
