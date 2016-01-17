@@ -20,6 +20,7 @@ Walkthrough of all user stories:
 
 <img src="https://github.com/shabnamkousha/codepath/blob/master/TodoList_Demo.gif" alt="Video Walkthrough" style="max-width:100%;">
 
+<img src="https://github.com/shabnamkousha/codepath/blob/master/Screenshots/App_Screenshot.png" alt="Video Walkthrough" style="max-width:100%;">
 
 
 
