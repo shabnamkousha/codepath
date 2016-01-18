@@ -2,6 +2,11 @@
 
 UPDATE 1: Added one of the suggeted items to the app: Persist the todo items into SQLite instead of a text file.
 
+UPDATE 2: Added one of the suggeted items to the app: Add more functionalities to the app. Users can add date and priority to their items.
+
+UPDATE 3: Added style to some items of the app (Basic)
+
+
 Todo List by Shabnam Kousha, Master of Computer Engineering Tech
 
 This is a basic Todo List Android application. In this application, a user is able to add, edit or delete items.
