@@ -21,7 +21,7 @@ them properly on app restart.
 
 Walkthrough of all user stories:
 
-<img src="https://github.com/shabnamkousha/codepath/blob/master/TodoList_Demo.gif" alt="Video Walkthrough" style="max-width:100%;">
+<img src="https://github.com/shabnamkousha/codepath/blob/master/Todo_Advanced.gif" alt="Video Walkthrough" style="max-width:100%;">
 
 App Screenshot:
 
