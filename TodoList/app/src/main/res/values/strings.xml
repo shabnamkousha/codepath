@@ -5,4 +5,16 @@
     <string name="add_item">Add a new task</string>
     <string name="title_activity_edit_item">Edit Item</string>
     <string name="save_item">Save</string>
+    <string name="action_add">Add</string>
+    <string name="title_activity_add_item">addItem</string>
+    <string name="label_name">Task Name</string>
+    <string name="label_date">Date</string>
+    <string name="label_priority">Priority</string>
+    <string name="add_new_item">Add</string>
+    <string name="edit_item">Edit</string>
+    <string-array name="priority_array">
+        <item>Low</item>
+        <item>Medium</item>
+        <item>High</item>
+    </string-array>
 </resources>
