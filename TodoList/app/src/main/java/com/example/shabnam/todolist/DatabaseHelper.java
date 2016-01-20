@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 /**
  * Created by Shabnam on 1/15/16.
@@ -57,19 +56,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void addItem(int id, String item, String priority, String day, String month, String year ) {
+    public void addItem(int anId, String anItem, String aPriority, String aDay, String aMonth, String aYear ) {
         // Create and/or open the database for writing
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
-            values.put(KEY_ITEM_LIST_ITEM, item);
-            values.put(KEY_ITEM_LIST_PRIORITY, priority);
-            values.put(KEY_ITEM_LIST_ID, id);
-            values.put(KEY_ITEM_LIST_YEAR, year);
-            values.put(KEY_ITEM_LIST_MONTH, month);
-            values.put(KEY_ITEM_LIST_DAY, day);
+            values.put(KEY_ITEM_LIST_ITEM, anItem);
+            values.put(KEY_ITEM_LIST_PRIORITY, aPriority);
+            values.put(KEY_ITEM_LIST_ID, anId);
+            values.put(KEY_ITEM_LIST_YEAR, aYear);
+            values.put(KEY_ITEM_LIST_MONTH, aMonth);
+            values.put(KEY_ITEM_LIST_DAY, aDay);
 
             // Notice how we haven't specified the primary key. SQLite auto increments the primary key column.
             db.insertOrThrow(TABLE_ITEM_LIST, null, values);
@@ -81,24 +80,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
     // Delete all posts and users in the database
-    public void updateItemFields(int id, String item, String priority, String day, String month, String year) {
+    public void updateItemFields(int anId, String anItem, String aPriority, String aDay, String aMonth, String aYear) {
 
         SQLiteDatabase db = getReadableDatabase();
-        String strSQL="Update " + TABLE_ITEM_LIST + " SET "+ KEY_ITEM_LIST_PRIORITY + " = \"" + priority + "\", "+
-        KEY_ITEM_LIST_MONTH + " = \"" + month + "\" , " +
-        KEY_ITEM_LIST_DAY + " = \"" + day + "\" , " +
-        KEY_ITEM_LIST_YEAR + " = \"" + year + "\" , " +
-        KEY_ITEM_LIST_ITEM + " = \"" + item + "\"  "
-        +"WHERE " + KEY_ITEM_LIST_ID + " = " + id;
+        String strSQL="Update " + TABLE_ITEM_LIST + " SET "+ KEY_ITEM_LIST_PRIORITY + " = \"" + aPriority + "\", "+
+        KEY_ITEM_LIST_MONTH + " = \"" + aMonth + "\" , " +
+        KEY_ITEM_LIST_DAY + " = \"" + aDay + "\" , " +
+        KEY_ITEM_LIST_YEAR + " = \"" + aYear + "\" , " +
+        KEY_ITEM_LIST_ITEM + " = \"" + anItem + "\"  "
+        +"WHERE " + KEY_ITEM_LIST_ID + " = " + anId;
         db.execSQL(strSQL);
     }
 
-    public void deleteItem(int id ) {
+    public void deleteItem(int anId ) {
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
         try {
-            db.delete(TABLE_ITEM_LIST, KEY_ITEM_LIST_ID + "=" + id, null);
+            db.delete(TABLE_ITEM_LIST, KEY_ITEM_LIST_ID + "=" + anId, null);
             db.setTransactionSuccessful();
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to delete all items");
@@ -106,10 +105,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.endTransaction();
         }
     }
-    public void updateItem(int newId ) {
+    public void updateItem(int aNewId ) {
 
         SQLiteDatabase db = getWritableDatabase();
-        String strSQL = "UPDATE " + TABLE_ITEM_LIST + " SET "+ KEY_ITEM_LIST_ID + "  =  "+ newId;
+        String strSQL = "UPDATE " + TABLE_ITEM_LIST + " SET "+ KEY_ITEM_LIST_ID + "  =  "+ aNewId;
 
         db.execSQL(strSQL);
 
@@ -122,9 +121,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    public Cursor getItem(int id) {
+    public Cursor getItem(int anId) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor result = db.rawQuery("SELECT * FROM " + TABLE_ITEM_LIST + " WHERE " + KEY_ITEM_LIST_ID + " = " + id, null);
+        Cursor result = db.rawQuery("SELECT * FROM " + TABLE_ITEM_LIST + " WHERE " + KEY_ITEM_LIST_ID + " = " + anId, null);
 
         return result;
     }

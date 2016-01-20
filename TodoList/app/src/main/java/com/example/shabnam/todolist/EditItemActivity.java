@@ -18,7 +18,7 @@ public class EditItemActivity extends AppCompatActivity {
     NumberPicker dayPicker = null;
     NumberPicker yearPicker = null;
     Spinner itemPriority;
-    ArrayAdapter<CharSequence> aPriorityAdapter;
+    ArrayAdapter<CharSequence> PriorityAdapter;
 
 
 
@@ -50,10 +50,10 @@ public class EditItemActivity extends AppCompatActivity {
         yearPicker.setDisplayedValues(year);
 
         itemPriority = (Spinner) findViewById(R.id.spinnerPriority);
-        aPriorityAdapter = ArrayAdapter.createFromResource(this,
+        PriorityAdapter = ArrayAdapter.createFromResource(this,
                 R.array.priority_array, android.R.layout.simple_spinner_item);
-        aPriorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        itemPriority.setAdapter(aPriorityAdapter);
+        PriorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        itemPriority.setAdapter(PriorityAdapter);
 
 
 
@@ -68,7 +68,7 @@ public class EditItemActivity extends AppCompatActivity {
         dayPicker.setValue(Integer.parseInt(itemDay));
         yearPicker.setValue(1);
 
-        int spinnerPosition = aPriorityAdapter.getPosition(itemPriorityItem);
+        int spinnerPosition = PriorityAdapter.getPosition(itemPriorityItem);
 
         //set the default according to value
         itemPriority.setSelection(spinnerPosition);

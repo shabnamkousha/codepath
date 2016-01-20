@@ -25,12 +25,12 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<String> todoItems;
-    ArrayAdapter<String> aToDoAdapter;
-    ListView lvItems;
+    ArrayAdapter<String> TodoListAdapter;
+    ListView listViewItems;
 
     ArrayList<String> todoPriority;
-    ArrayAdapter<String> aToDoAdapterP;
-    ListView lvItemsP;
+    ArrayAdapter<String> TodoAdapterPriority;
+    ListView listItemsPriority;
 
     EditText etEditText;
     private final int REQUEST_CODE = 20;
@@ -45,52 +45,52 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         populateArrayItems();
-        lvItems=(ListView) findViewById(R.id.lvItems);
-        lvItems.setAdapter(aToDoAdapter);
+        listViewItems=(ListView) findViewById(R.id.lvItems);
+        listViewItems.setAdapter(TodoListAdapter);
 
-        lvItemsP=(ListView) findViewById(R.id.lvItems1);
-        lvItemsP.setAdapter(aToDoAdapterP);
+        listItemsPriority=(ListView) findViewById(R.id.lvItems1);
+        listItemsPriority.setAdapter(TodoAdapterPriority);
 
         //Long click listener for edit item
-        lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                                               @Override
-                                               public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        listViewItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                                                     @Override
+                                                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                                                   deleteItems(position);
+                                                         deleteItems(position);
 
-                                                   todoItems.remove(position);
-                                                   todoPriority.remove(position);
+                                                         todoItems.remove(position);
+                                                         todoPriority.remove(position);
 
-                                                   // Refresh the list
-                                                   aToDoAdapter.notifyDataSetChanged();
-                                                   aToDoAdapterP.notifyDataSetChanged();
-                                                   int deleteItemPosition=position+1;
+                                                         // Refresh the list
+                                                         TodoListAdapter.notifyDataSetChanged();
+                                                         TodoAdapterPriority.notifyDataSetChanged();
+                                                         int deleteItemPosition = position + 1;
 
-                                                   myDB.deleteItem(deleteItemPosition);
+                                                         myDB.deleteItem(deleteItemPosition);
 
-                                                   return true;
-                                               }
-                                           }
+                                                         return true;
+                                                     }
+                                                 }
         );
 
         //Short click listener for edit item
-        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                           @Override
-                                           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                               //Here it calls launchEditItem function to launch the edititem activity. It passes the
-                                               //position of the item being edited in the child activity
-                                               launchEditItem(position);
-                                           }
-                                       }
+        listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                 @Override
+                                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                     //Here it calls launchEditItem function to launch the edititem activity. It passes the
+                                                     //position of the item being edited in the child activity
+                                                     launchEditItem(position);
+                                                 }
+                                             }
         );
 
     }
 
     //In this function after setting the item content and position parameters,
     //edititem activity will be called.
-    public void launchEditItem(int position) {
+    public void launchEditItem(int aPositionIndex) {
 
-        Cursor editItem = myDB.getItem(position + 1);
+        Cursor editItem = myDB.getItem(aPositionIndex + 1);
         editItem.moveToNext();
 
         Intent i = new Intent(MainActivity.this, EditItemActivity.class);
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         String itemYear=editItem.getString(5);
 
 
-        i.putExtra("position", position);
+        i.putExtra("position", aPositionIndex);
 
         i.putExtra("itemContent", itemContent);
         i.putExtra("itemPriority", itemContentPriority);
@@ -118,38 +118,38 @@ public class MainActivity extends AppCompatActivity {
 
     //Time to handle the result of the edititem activity
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int aRequestCode, int aResultCode, Intent aDataSet) {
         // REQUEST_CODE is defined above
-        if (resultCode == RESULT_OK && requestCode == 1) {
+        if (aResultCode == RESULT_OK && aRequestCode == 1) {
             // Extract name value from result extras
-            String editedItem = data.getExtras().getString("editedItem");
-            String itemPriority = data.getExtras().getString("itemPriority");
-            String itemMonth = data.getExtras().getString("itemMonth");
-            String itemDay = data.getExtras().getString("itemDay");
-            String itemYear = data.getExtras().getString("itemYear");
-            int itemPosition = data.getExtras().getInt("itemPosition", 0);
+            String editedItem = aDataSet.getExtras().getString("editedItem");
+            String itemPriority = aDataSet.getExtras().getString("itemPriority");
+            String itemMonth = aDataSet.getExtras().getString("itemMonth");
+            String itemDay = aDataSet.getExtras().getString("itemDay");
+            String itemYear = aDataSet.getExtras().getString("itemYear");
+            int itemPosition = aDataSet.getExtras().getInt("itemPosition", 0);
 
             todoItems.set(itemPosition, editedItem);
             todoPriority.set(itemPosition, itemPriority);
 
-            aToDoAdapter.notifyDataSetChanged();
-            aToDoAdapterP.notifyDataSetChanged();
+            TodoListAdapter.notifyDataSetChanged();
+            TodoAdapterPriority.notifyDataSetChanged();
 
             Toast.makeText(this, "Item Edited", Toast.LENGTH_SHORT).show();
             updateItems(itemPosition , itemDay,itemMonth, itemYear);
-        } else  if (resultCode == RESULT_OK && requestCode == 2) {
+        } else  if (aResultCode == RESULT_OK && aRequestCode == 2) {
 
-            String addedItem = data.getExtras().getString("addedItem");
-            String itemPriority = data.getExtras().getString("itemPriority");
-            String itemMonth = data.getExtras().getString("itemMonth");
-            String itemDay = data.getExtras().getString("itemDay");
-            String itemYear = data.getExtras().getString("itemYear");
+            String addedItem = aDataSet.getExtras().getString("addedItem");
+            String itemPriority = aDataSet.getExtras().getString("itemPriority");
+            String itemMonth = aDataSet.getExtras().getString("itemMonth");
+            String itemDay = aDataSet.getExtras().getString("itemDay");
+            String itemYear = aDataSet.getExtras().getString("itemYear");
 
             todoItems.add(addedItem);
             todoPriority.add(itemPriority);
 
-            aToDoAdapter.notifyDataSetChanged();
-            aToDoAdapterP.notifyDataSetChanged();
+            TodoListAdapter.notifyDataSetChanged();
+            TodoAdapterPriority.notifyDataSetChanged();
 
             writeItem(itemDay, itemMonth, itemYear);
 
@@ -160,8 +160,8 @@ public class MainActivity extends AppCompatActivity {
     //Read the items from file and populates them in the list
     public void populateArrayItems(){
         readItems();
-        aToDoAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,todoItems) ;
-        aToDoAdapterP = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,todoPriority) ;
+        TodoListAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,todoItems) ;
+        TodoAdapterPriority = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,todoPriority) ;
     }
 
     //This function is used to read the items from the text file
@@ -180,35 +180,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //This function is used to write the items into the text file
-    private void updateItems(int idPosition, String chosenDay, String chosenMonth, String chosenYear){
+    private void updateItems(int aPositionIndex, String aChosenDay, String aChosenMonth, String aChosenYear){
 
         //Deletes and adds all the items again
-        myDB.updateItemFields(idPosition+1, todoItems.get(idPosition), todoPriority.get(idPosition), chosenDay, chosenMonth, chosenYear);
+        myDB.updateItemFields(aPositionIndex + 1, todoItems.get(aPositionIndex), todoPriority.get(aPositionIndex), aChosenDay, aChosenMonth, aChosenYear);
 
     }
 
     //This function is used to write the items into the text file
-    private void deleteItems(int position){
+    private void deleteItems(int aPositionIndex){
         //Actual id in DB
-        position=position+1;
+        aPositionIndex=aPositionIndex+1;
 
-        myDB.deleteItem(position);
+        myDB.deleteItem(aPositionIndex);
 
-        for (int i = position+1; i <= todoItems.size(); i++) {
+        for (int i = aPositionIndex+1; i <= todoItems.size(); i++) {
                 myDB.updateItem(i-1);
         }
     }
 
     //This function is used to write single item into the text file
-    private void writeItem(String chosenDay, String chosenMonth, String chosenYear){
+    private void writeItem(String aChosenDay, String aChosenMonth, String aChosenYear){
 
         int idPosition=todoItems.size();
         int itemPosition=todoItems.size()-1;
-        //Toast.makeText(this, chosenMonth , Toast.LENGTH_SHORT).show();
-        //Toast.makeText(this,  todoPriority.get(itemPosition) , Toast.LENGTH_SHORT).show();
-        //Toast.makeText(this, todoItems.get(itemPosition) , Toast.LENGTH_SHORT).show();
 
-        myDB.addItem(idPosition, todoItems.get(itemPosition), todoPriority.get(itemPosition), chosenDay, chosenMonth,chosenYear);
+        myDB.addItem(idPosition, todoItems.get(itemPosition), todoPriority.get(itemPosition), aChosenDay, aChosenMonth, aChosenYear);
 
     }
 
@@ -222,11 +219,11 @@ public class MainActivity extends AppCompatActivity {
 
     // Default menu function
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem anItem) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        int id = anItem.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
@@ -240,15 +237,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(anItem);
     }
 
-    //This function is being called when use clicks Add button to add the new item
-    public void onAddItem(View view) {
-        String currentString=etEditText.getText().toString();
-        todoItems.add(currentString);
-        todoPriority.add("hi");
-        etEditText.setText("");
-        //writeItems();
-    }
 }
